@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @DisplayName("Mapper Person Suite")
@@ -19,7 +19,7 @@ class MapperPersonTest {
     @DisplayName("Test case for convert the PersonDTO objects to Person object")
     void mapToPerson() {
         List<ChildDTO> inputChildren = new ArrayList<>();
-        inputChildren.add(new ChildDTO("Alice", new Date()));
+        inputChildren.add(new ChildDTO("Alice", LocalDate.now()));
         PersonDTO inputPersonDTO = new PersonDTO("123456789", "John Doe", "Jane Doe", inputChildren);
 
         Person outputPerson = MapperPerson.mapToPerson(inputPersonDTO);
@@ -48,7 +48,7 @@ class MapperPersonTest {
     @DisplayName("Test case for convert the Person objects to PersonDTO object")
     void mapToPersonDTO() {
         List<Child> inputChildren = new ArrayList<>();
-        inputChildren.add(new Child("Alice", new Date()));
+        inputChildren.add(new Child("Alice", LocalDate.now()));
         Person inputPerson = new Person("123456789", "John Doe", "Jane Doe", inputChildren);
 
         PersonDTO outputPersonDTO = MapperPerson.mapToPersonDTO(inputPerson);

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @DisplayName("Mapper Child Test Suite")
@@ -17,8 +17,8 @@ class MapperChildTest {
     @DisplayName("Test case for convert the ChildDTO objects to Child object")
     void mapToChild() {
         List<ChildDTO> inputChildList = new ArrayList<>();
-        inputChildList.add(new ChildDTO("Alice", new Date()));
-        inputChildList.add(new ChildDTO("Bob", new Date()));
+        inputChildList.add(new ChildDTO("Alice", LocalDate.now()));
+        inputChildList.add(new ChildDTO("Bob", LocalDate.now()));
 
         List<Child> outputChildList = MapperChild.mapToChild(inputChildList);
 
@@ -37,8 +37,8 @@ class MapperChildTest {
     void mapToChildDTO() {
 
         List<Child> inputChildList = new ArrayList<>();
-        inputChildList.add(new Child("Alice", new Date()));
-        inputChildList.add(new Child("Bob", new Date()));
+        inputChildList.add(new Child("Alice", LocalDate.now()));
+        inputChildList.add(new Child("Bob", LocalDate.now()));
 
         List<ChildDTO> outputChildList = MapperChild.mapToChildDTO(inputChildList);
 
