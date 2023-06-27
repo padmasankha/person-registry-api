@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class InMemoryDataSource implements IDataSource {
 
-    private Map<String, Person> personMap = new HashMap<>();
+    private final Map<String, Person> personMap = new HashMap<>();
 
     @Override
     public void save(Person person) {
