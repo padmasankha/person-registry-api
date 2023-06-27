@@ -8,10 +8,7 @@ import com.padmasankha.person.registry.repository.IDataSource;
 import com.padmasankha.person.registry.utils.MapperChild;
 import com.padmasankha.person.registry.utils.MapperPerson;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -66,14 +63,13 @@ public class PersonService {
     public Optional<ChildDTO> findEldestChildBySsn(String ssn) throws Exception {
 
         Person person = iDataSource.getBySSN(ssn).orElseThrow(
-                ()-> new IllegalArgumentException("Person not found for ssn: " + ssn));
+                ()-> new NoSuchElementException("Person not found for ssn: " + ssn));
         if(person.children()==null || person.children().isEmpty())
-            throw new IllegalArgumentException("No Children found for the provided SSN: " + ssn);
+            throw new NoSuchElementException("No Children found for the provided SSN: " + ssn);
 
         List<Child> childList = person.children();
         List<ChildDTO> childDTOList = MapperChild.mapToChildDTO(childList);
-        Collections.sort(childDTOList, Comparator.comparing(ChildDTO::birthday));
-        ChildDTO eldestChild = childDTOList.get(0);
+        ChildDTO eldestChild = childDTOList.stream().sorted(Comparator.comparing(ChildDTO::birthday)).findFirst().get();
         return Optional.ofNullable(eldestChild);
     }
 }

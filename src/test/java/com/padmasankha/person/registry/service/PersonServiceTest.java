@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @DisplayName("Person Service Test Suite")
@@ -66,7 +67,7 @@ class PersonServiceTest {
     @DisplayName("Test case for get the eldest child, when SSN invalid")
     void findEldestChildByInvalidSsn() throws Exception {
 
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NoSuchElementException exception = Assertions.assertThrows(NoSuchElementException.class, () -> {
             personService.findEldestChildBySsn("1234");
         });
 
@@ -81,7 +82,7 @@ class PersonServiceTest {
 
         PersonDTO personDTO = new PersonDTO("1234", "Test 1 Name", "Test 1 Spouse Name",null);
         personService.savePerson(personDTO);
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NoSuchElementException exception = Assertions.assertThrows(NoSuchElementException.class, () -> {
             personService.findEldestChildBySsn("1234");
         });
         String expectedMessage = "No Children found for the provided SSN: 1234";
@@ -96,7 +97,7 @@ class PersonServiceTest {
         List<ChildDTO> children =  new ArrayList<>();
         PersonDTO personDTO = new PersonDTO("1234", "Test 1 Name", "Test 1 Spouse Name",children);
         personService.savePerson(personDTO);
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NoSuchElementException exception = Assertions.assertThrows(NoSuchElementException.class, () -> {
             personService.findEldestChildBySsn("1234");
         });
         String expectedMessage = "No Children found for the provided SSN: 1234";
