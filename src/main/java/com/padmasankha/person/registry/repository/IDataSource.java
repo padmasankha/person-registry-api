@@ -13,6 +13,4 @@ public interface IDataSource {
 
     Boolean isSSNRegistered(String ssn);
 
-    Optional<List<Person>> getAll();
-
 }

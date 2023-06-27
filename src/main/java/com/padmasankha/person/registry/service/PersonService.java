@@ -44,22 +44,6 @@ public class PersonService {
         return MapperPerson.mapToPersonDTO(person);
     }
 
-    public List<PersonDTO> getAll() throws Exception{
-
-        logger.info("Retrieving all persons");
-
-        List<Person> personList = iDataSource.getAll()
-                .orElseThrow(()->new IllegalArgumentException("Not found any registered person in the database"));
-
-        List<PersonDTO> personDTOList = personList.stream()
-                .map(MapperPerson::mapToPersonDTO)
-                .collect(Collectors.toList());
-
-        logger.info("All persons retrieved successfully");
-
-        return personDTOList;
-    }
-
     public Optional<ChildDTO> findEldestChildBySsn(String ssn) throws Exception {
 
         Person person = iDataSource.getBySSN(ssn).orElseThrow(

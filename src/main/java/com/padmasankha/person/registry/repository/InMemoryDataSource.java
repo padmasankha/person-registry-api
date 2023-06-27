@@ -3,7 +3,6 @@ package com.padmasankha.person.registry.repository;
 import com.padmasankha.person.registry.domain.Person;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,11 +23,6 @@ public class InMemoryDataSource implements IDataSource {
     @Override
     public Boolean isSSNRegistered(String ssn) {
         return personMap.containsKey(ssn);
-    }
-
-    @Override
-    public Optional<List<Person>> getAll() {
-        return Optional.ofNullable(personMap.values().stream().toList());
     }
 
 }
