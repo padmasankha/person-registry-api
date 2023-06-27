@@ -53,11 +53,11 @@ class PersonServiceTest {
     @Test
     @DisplayName("Test case for get the eldest child")
     void findEldestChildBySsn() throws Exception {
-        Child expectedEldestChild = new Child("Child 2 Name",formatter.parse("2000-12-31"));
+        ChildDTO expectedEldestChild = new ChildDTO("Child 2 Name",formatter.parse("2000-12-31"));
         List<ChildDTO> childDTOList = dataSetupForChildDTO();
         PersonDTO personDTO = new PersonDTO("1234", "Test 1 Name", "Test 1 Spouse Name",childDTOList);
         personService.savePerson(personDTO);
-        Optional<Child> actualEldestChild = personService.findEldestChildBySsn("1234");
+        Optional<ChildDTO> actualEldestChild = personService.findEldestChildBySsn("1234");
         Assertions.assertTrue(actualEldestChild.isPresent());
         Assertions.assertEquals(expectedEldestChild, actualEldestChild.get());
     }
@@ -71,7 +71,6 @@ class PersonServiceTest {
         });
 
         String expectedMessage = "Person not found for ssn: 1234";
-
         String actualMessage = exception.getMessage();
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
@@ -81,6 +80,21 @@ class PersonServiceTest {
     void findEldestChildBySsnWhenNoChild() throws Exception {
 
         PersonDTO personDTO = new PersonDTO("1234", "Test 1 Name", "Test 1 Spouse Name",null);
+        personService.savePerson(personDTO);
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            personService.findEldestChildBySsn("1234");
+        });
+        String expectedMessage = "No Children found for the provided SSN: 1234";
+        String actualMessage = exception.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    @DisplayName("Test case for get the eldest child, When there is empty child list")
+    void findEldestChildBySsnWhenEmptyChild() throws Exception {
+
+        List<ChildDTO> children =  new ArrayList<>();
+        PersonDTO personDTO = new PersonDTO("1234", "Test 1 Name", "Test 1 Spouse Name",children);
         personService.savePerson(personDTO);
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             personService.findEldestChildBySsn("1234");

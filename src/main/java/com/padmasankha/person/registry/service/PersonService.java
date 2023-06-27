@@ -2,8 +2,10 @@ package com.padmasankha.person.registry.service;
 
 import com.padmasankha.person.registry.domain.Child;
 import com.padmasankha.person.registry.domain.Person;
+import com.padmasankha.person.registry.dto.ChildDTO;
 import com.padmasankha.person.registry.dto.PersonDTO;
 import com.padmasankha.person.registry.repository.IDataSource;
+import com.padmasankha.person.registry.utils.MapperChild;
 import com.padmasankha.person.registry.utils.MapperPerson;
 
 import java.util.Collections;
@@ -35,13 +37,13 @@ public class PersonService {
         logger.info("Person created successfully: " + personDTO.ssn());
     }
 
-    public PersonDTO findBySsn(String socialSecurityNumber) throws Exception {
-        logger.info("Finding person by social security number: " + socialSecurityNumber);
+    public PersonDTO findBySsn(String ssn) throws Exception {
+        logger.info("Finding person by social security number: " + ssn);
 
-        Person person = iDataSource.getBySSN(socialSecurityNumber).orElseThrow(() ->
-                new IllegalArgumentException("Person not found for social security number"));
+        Person person = iDataSource.getBySSN(ssn).orElseThrow(() ->
+                new IllegalArgumentException("Person not found for social security number :" +ssn));
 
-        logger.info("Person found by social security number: " + socialSecurityNumber);
+        logger.info("Person found by social security number: " + ssn);
         return MapperPerson.mapToPersonDTO(person);
     }
 
@@ -61,17 +63,17 @@ public class PersonService {
         return personDTOList;
     }
 
-    public Optional<Child> findEldestChildBySsn(String ssn) throws Exception {
+    public Optional<ChildDTO> findEldestChildBySsn(String ssn) throws Exception {
 
         Person person = iDataSource.getBySSN(ssn).orElseThrow(
                 ()-> new IllegalArgumentException("Person not found for ssn: " + ssn));
-        if(person.children()==null)
+        if(person.children()==null || person.children().isEmpty())
             throw new IllegalArgumentException("No Children found for the provided SSN: " + ssn);
 
-        List<Child> children = person.children();
-
-        Collections.sort(children, Comparator.comparing(Child::birthday));
-        Child eldestChild = children.get(0);
+        List<Child> childList = person.children();
+        List<ChildDTO> childDTOList = MapperChild.mapToChildDTO(childList);
+        Collections.sort(childDTOList, Comparator.comparing(ChildDTO::birthday));
+        ChildDTO eldestChild = childDTOList.get(0);
         return Optional.ofNullable(eldestChild);
     }
 }
