@@ -8,7 +8,6 @@ public interface IDataSource {
 
     void save(Person person);
     Optional<Person> getBySSN(String ssn);
-
     Boolean isSSNRegistered(String ssn);
 
 }
